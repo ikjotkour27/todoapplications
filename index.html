@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Master - To-Do List App</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Task Master</h1>
+            <button class="mode-toggle" id="modeToggle" aria-label="Toggle dark mode">🌙</button>
+        </header>
+
+        <div class="app-container">
+            <div class="sidebar">
+                <h2>Filters</h2>
+                <div class="filter-section">
+                    <h3>Status</h3>
+                    <div class="filter-option active" data-filter="all" tabindex="0" role="button">All Tasks</div>
+                    <div class="filter-option" data-filter="active" tabindex="0" role="button">Active</div>
+                    <div class="filter-option" data-filter="completed" tabindex="0" role="button">Completed</div>
+                </div>
+                <div class="filter-section">
+                    <h3>Priority</h3>
+                    <div class="filter-option" data-filter="priority-high" tabindex="0" role="button">High Priority</div>
+                    <div class="filter-option" data-filter="priority-medium" tabindex="0" role="button">Medium Priority</div>
+                    <div class="filter-option" data-filter="priority-low" tabindex="0" role="button">Low Priority</div>
+                </div>
+                <div class="filter-section">
+                    <h3>Category</h3>
+                    <div id="category-filters">
+                        <!-- Dynamic categories will be added here -->
+                    </div>
+                </div>
+                <div class="filter-section">
+                    <div class="filter-option" data-filter="trash" tabindex="0" role="button">Trash</div>
+                </div>
+                <div class="filter-section">
+                    <div class="filter-option" data-filter="stats" tabindex="0" role="button">Statistics</div>
+                </div>
+            </div>
+
+            <div class="main-content">
+                <div class="task-form">
+                    <h2>Add New Task</h2>
+                    <form id="addTaskForm">
+                        <div class="form-group">
+                            <label for="taskTitle">Task Title</label>
+                            <input type="text" id="taskTitle" class="form-control" placeholder="What needs to be done?" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="taskDescription">Description</label>
+                            <textarea id="taskDescription" class="form-control" placeholder="Add details about your task"></textarea>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="taskDueDate">Due Date</label>
+                                <input type="datetime-local" id="taskDueDate" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label for="taskPriority">Priority</label>
+                                <select id="taskPriority" class="form-control">
+                                    <option value="low">Low</option>
+                                    <option value="medium" selected>Medium</option>
+                                    <option value="high">High</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="taskCategory">Category</label>
+                                <input type="text" id="taskCategory" class="form-control" placeholder="e.g. Work, Personal, Shopping" list="categoryList">
+                                <datalist id="categoryList">
+                                    <!-- Category suggestions will be added here -->
+                                </datalist>
+                            </div>
+                            <div class="form-group">
+                                <label for="taskReminder">Set Reminder</label>
+                                <input type="datetime-local" id="taskReminder" class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-buttons">
+                            <button type="button" id="cancelEditBtn" class="btn btn-secondary" style="display: none;">Cancel</button>
+                            <button type="submit" class="btn btn-primary">Add Task</button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="stats-container" id="statsContainer" style="display: none;">
+                    <div class="stats-header">
+                        <h2>Task Statistics</h2>
+                    </div>
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-value" id="totalTasksValue">0</div>
+                            <div class="stat-label">Total Tasks</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="completedTasksValue">0</div>
+                            <div class="stat-label">Completed</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="pendingTasksValue">0</div>
+                            <div class="stat-label">Pending</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="highPriorityValue">0</div>
+                            <div class="stat-label">High Priority</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="task-list-container">
+                    <div class="task-list-header">
+                        <h2>My Tasks</h2>
+                        <div class="task-sort">
+                            <span>Sort by:</span>
+                            <select id="sortTasks">
+                                <option value="dueDate">Due Date</option>
+                                <option value="priority">Priority</option>
+                                <option value="title">Title</option>
+                                <option value="dateAdded">Date Added</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="search-container">
+                        <input type="text" id="searchInput" class="search-input" placeholder="Search tasks...">
+                    </div>
+                    <ul class="task-list" id="taskList">
+                        <!-- Tasks will be added here dynamically -->
+                    </ul>
+                </div>
+
+                <div class="trash-container" id="trashContainer">
+                    <div class="trash-header">
+                        <h2>Trash</h2>
+                        <button class="btn btn-empty-trash" id="emptyTrashBtn">Empty Trash</button>
+                    </div>
+                    <ul class="deleted-task-list" id="deletedTaskList">
+                        <!-- Deleted tasks will be added here dynamically -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="notification" id="notification"></div>
+    
+    <div class="modal-overlay" id="confirmModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 class="modal-title">Confirm Action</h3>
+                <button class="modal-close" id="modalClose">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                Are you sure you want to perform this action?
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="modalCancel">Cancel</button>
+                <button class="btn btn-primary" id="modalConfirm">Confirm</button>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+   
+</body>
+</html>
