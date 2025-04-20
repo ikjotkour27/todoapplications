@@ -1,7 +1,7 @@
 
 :root {
-    --primary-color: #4CAF50;
-    --secondary-color: #2196F3;
+    --primary-color: #dd0fbe;
+    --secondary-color: #4106f1;
     --danger-color: #f44336;
     --warning-color: #ff9800;
     --success-color: #8bc34a;
@@ -12,8 +12,8 @@
 }
 
 .dark-mode {
-    --primary-color: #6abf6e;
-    --secondary-color: #64b5f6;
+    --primary-color: #dd0fbe;
+    --secondary-color: #ff7ade;
     --danger-color: #e57373;
     --warning-color: #ffb74d;
     --success-color: #aed581;
